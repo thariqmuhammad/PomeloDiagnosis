@@ -1,0 +1,103 @@
+{% extends "main_layout.html" %}
+{% block content %}
+
+    <!-- ======= Breadcrumbs ======= -->
+    <section class="breadcrumbs">
+        <div class="container">
+  
+          <ol>
+            <li><a href="/#home">Home</a></li>
+            <li>Prediksi penyakit</li>
+          </ol>
+          <h2>Halaman prediksi penyakit pamelomu disini!</h2>
+  
+        </div>
+      </section><!-- End Breadcrumbs -->
+
+    <section id="predict" class="predict">
+        <center>
+            {% for message in get_flashed_messages() %}
+            <div id="alertMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            {% endfor %}
+        </center>
+        <div class="container" data-aos="fade-up">
+            <div class="row gx-0">
+                <div class="col-md-6 d-flex flex-column justify-content-center mb-3" data-aos="fade-up">
+                    <div class="content">
+                        <h2 class="mb-3">Unggah Gambar yang ingin anda deteksi!</h2>
+                        <p>
+                            Pastikan gambar jelas dalam pencahayaan yang cukup
+                        </p>
+                        <div class="row mb-5">
+                            <div class="col-6 d-flex flex-column align-items-center">
+                                <span>
+                                    <img src="../static/gambar/arrow-bar-up.svg" width="40" alt="">
+                                </span>
+                                <label class="btn btn-outline-secondary btn-block position-relative">
+                                    <input type="file" class="form-control d-none" name="file">
+                                    Unggah Gambar
+                                </label>
+                            </div>
+                            <div class="col-6 d-flex flex-column align-items-center">
+                                <span>
+                                    <img src="../static/gambar/record.svg" width="40" alt="">
+                                </span>
+                                <label class="btn btn-outline-secondary btn-block position-relative record">
+                                    Ambil Gambar
+                                </label>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <form action="proses" method="POST" enctype="multipart/form-data">
+                                    <input id="dataGambar" type="hidden" value="kk" name="uriGambar">
+                                    <button type="submit" class="btn btn-primary"  id="predic">
+                                        <b>Mulai Prediksi</b>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                        <canvas id="output"></canvas>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 d-flex flex-column justify-content-center">
+                    <div class="webcamku">
+                        <div class="img-container position-relative">
+                            {% if preview_image_url %}
+                                <img src="{{ preview_image_url }}" class="img-fluid" id="preview_img" width="400">
+                            {% else %}
+                                <img src="../static/gambar/foto_prev.svg" class="img-fluid" id="preview_img" width="400">
+                            {% endif %}
+                            <div class="overlay">
+                                <span>
+                                    <img src="../static/gambar/record.svg" width="80" alt="">
+                                </span>
+                                <label class="text-center position-relative">Gambar Pratinjau</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Tambahkan div baru untuk "Hasil Prediksi" -->
+            <div class="row gx-0">
+                <div class="col-md-6 offset-md-6 hasil-container">
+                    {% if hasil is defined and percentage is defined %}
+                    <div class="hasil">
+                        <h2 class="mb-3">Hasil Prediksi</h2>
+                        <p>
+                            <span>Terdeteksi {{percentage}}% {{hasil}}</span>
+                        </p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+    
+{% endblock %}
